@@ -5,6 +5,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import pool from "./db.js";
 import categoryRoutes from "./routes/categoryRoutes.js";
+import transactionRoutes from "./routes/transactionRoutes.js";
 
 dotenv.config();
 
@@ -14,6 +15,7 @@ app.use(cors());
 app.use(express.json()); // converts incoming json to js obj for req access
 
 app.use("/api/categories", categoryRoutes); // localhost:5000/api/categories
+app.use("/api/transactions", transactionRoutes); // localhost:5000/api/transactions
 
 app.get("/", (req, res) => {
   res.send("Personal Finance Management API is running");
