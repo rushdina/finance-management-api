@@ -12,7 +12,7 @@ dotenv.config();
 const app = express();
 
 app.use(cors());
-app.use(express.json()); // converts incoming json to js obj for req access
+app.use(express.json()); // converts incoming json from frontend to obj for req access like req.body
 
 app.use("/api/categories", categoryRoutes); // localhost:5000/api/categories
 app.use("/api/transactions", transactionRoutes); // localhost:5000/api/transactions
@@ -26,10 +26,11 @@ app.get("/db-test", async (req, res) => {
   try {
     const result = await pool.query("SELECT NOW()"); // retrieve current date and time obj
     console.log(result);
+
     res.json({
       message: "Database connected successfully",
       databaseTime: result.rows[0],
-    }); // JSON response sent to frontend
+    });
   } catch (error) {
     // Server error
     res.status(500).json({

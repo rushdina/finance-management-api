@@ -3,7 +3,8 @@ import pool from "../db.js";
 // Send SQL query to PostgreSQL
 export const getCategories = async (req, res) => {
   try {
-    const result = await pool.query("SELECT * FROM categories ORDER BY id ASC"); // retrieves category records object from PostgreSQL
+    // retrieves category records object from PostgreSQL
+    const result = await pool.query("SELECT * FROM categories ORDER BY id ASC");
     console.log(result);
 
     res.status(200).json(result.rows); // sends category data as JSON response to frontend
