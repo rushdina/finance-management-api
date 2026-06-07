@@ -1,6 +1,7 @@
 import pool from "../db.js";
 
 // Send SQL query to PostgreSQL
+// GET /api/categories
 export const getCategories = async (req, res) => {
   try {
     // retrieves category records object from PostgreSQL
