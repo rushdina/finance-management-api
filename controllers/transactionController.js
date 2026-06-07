@@ -49,7 +49,6 @@ export const getTransactionById = async (req, res) => {
     `,
       [id],
     );
-    console.log(result);
 
     // Requested Resource NOT FOUND
     if (result.rows.length === 0) {
@@ -131,6 +130,39 @@ export const updateTransaction = async (req, res) => {
   } catch (error) {
     res.status(500).json({
       message: "Failed to update transaction",
+      error: error.message,
+    });
+  }
+};
+
+// DELETE /api/transactions/:id
+export const deleteTransaction = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const result = await pool.query(
+      `
+      DELETE FROM transactions
+      WHERE id = $1
+      RETURNING *
+    `,
+      [id],
+    );
+
+    // Requested Resource NOT FOUND
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        message: "Transaction not found",
+      });
+    }
+
+    res.status(200).json({
+      message: "Transaction deleted successfully",
+      transaction: result.rows[0],
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Failed to delete transaction",
       error: error.message,
     });
   }

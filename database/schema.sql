@@ -18,7 +18,7 @@ CREATE TABLE categories (
 
 CREATE TABLE transactions (
     id SERIAL PRIMARY KEY,
-    item VARCHAR(100) NOT NULL,
+    title VARCHAR(100) NOT NULL,
     amount DECIMAL(10, 2) NOT NULL CHECK (amount > 0),
     type VARCHAR(10) NOT NULL CHECK (type IN ('income', 'expense')),
     category_id INTEGER NOT NULL,
@@ -26,9 +26,6 @@ CREATE TABLE transactions (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_category FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE RESTRICT
 );
-
-ALTER TABLE
-    transactions RENAME COLUMN item TO title;
 
 INSERT INTO
     categories (name)
