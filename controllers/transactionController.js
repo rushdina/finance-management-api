@@ -1,9 +1,17 @@
 import pool from "../db.js";
 
-// GET /api/transactions
+/*
+GET /api/transactions
+GET /api/transactions?type=expense
+GET /api/transactions?category=Food
+GET /api/transactions?type=expense&category=Food
+*/
 export const getTransactions = async (req, res) => {
   try {
-    const result = await pool.query(`
+    const { type, category } = req.query;
+
+    // No filter /api/transactions
+    let query = `
       SELECT
         t.id,
         t.title,
@@ -15,8 +23,32 @@ export const getTransactions = async (req, res) => {
       FROM transactions AS t
       INNER JOIN categories AS c
       ON t.category_id = c.id
-      ORDER BY t.id ASC
-    `);
+    `;
+
+    const values = []; // store sql parameter to replace placeholder
+    const conditions = []; // store WHERE conditions
+
+    // e.g /api/transactions?type=expense
+    if (type) {
+      values.push(type);
+      conditions.push(`t.type = $${values.length}`);
+    }
+
+    // e.g /api/transactions?category=Food
+    if (category) {
+      values.push(category);
+      conditions.push(`c.name = $${values.length}`);
+    }
+
+    // e.g /api/transactions?type=expense&category=Food
+    if (conditions.length > 0) {
+      query += ` WHERE ${conditions.join(" AND ")}`;
+    }
+
+    // End query with ORDER BY
+    query += ` ORDER BY t.id ASC`;
+
+    const result = await pool.query(query, values);
 
     res.status(200).json(result.rows);
   } catch (error) {
