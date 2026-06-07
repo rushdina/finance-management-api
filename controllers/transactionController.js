@@ -76,7 +76,7 @@ export const createTransaction = async (req, res) => {
       INSERT INTO transactions (title, amount, type, category_id, transaction_date)
       VALUES ($1, $2, $3, $4, $5)
       RETURNING *
-      `,
+    `,
       [title, amount, type, category_id, transaction_date],
     );
     console.log(result);
@@ -163,6 +163,52 @@ export const deleteTransaction = async (req, res) => {
   } catch (error) {
     res.status(500).json({
       message: "Failed to delete transaction",
+      error: error.message,
+    });
+  }
+};
+
+// GET /api/transactions/summary
+export const getTransactionSummary = async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT
+        COALESCE(
+          SUM(
+            CASE 
+              WHEN type = 'income' THEN amount
+              ELSE 0
+            END
+          ),
+          0
+        ) AS total_income,
+
+        COALESCE(
+          SUM(
+            CASE 
+              WHEN type = 'expense' THEN amount
+              ELSE 0
+            END
+          ),
+          0
+        ) AS total_expense,
+
+        COALESCE(
+          SUM(
+            CASE 
+              WHEN type = 'income' THEN amount
+              ELSE -amount
+            END
+          ),
+          0
+        ) AS balance
+      FROM transactions
+    `);
+
+    res.status(200).json(result.rows[0]);
+  } catch (error) {
+    res.status(500).json({
+      message: "Failed to fetch transaction summary",
       error: error.message,
     });
   }
