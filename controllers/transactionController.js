@@ -113,7 +113,7 @@ export const createTransaction = async (req, res) => {
     `,
       [title, amount, type, category_id, transaction_date],
     );
-    console.log(result);
+    // console.log(result);
 
     // HTTP 201 Created
     res.status(201).json({
@@ -148,7 +148,7 @@ export const updateTransaction = async (req, res) => {
     `,
       [title, amount, type, category_id, transaction_date, id],
     );
-    console.log(result);
+    // console.log(result);
 
     // Requested Resource NOT FOUND
     if (result.rows.length === 0) {

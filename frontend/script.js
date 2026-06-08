@@ -1,6 +1,8 @@
 const API_URL = "http://localhost:5000/api";
 
 const categorySelect = document.getElementById("category"); // <select id="category"></select>
+const transactionTableBody = document.getElementById("transactionTableBody");
+const transactionForm = document.getElementById("transactionForm");
 
 // Load categories from backend and display them in dropdown select
 const loadCategories = async () => {
@@ -28,8 +30,6 @@ const loadCategories = async () => {
 };
 
 loadCategories();
-
-const transactionTableBody = document.getElementById("transactionTableBody");
 
 // Load transactions from backend and display them in table
 const loadTransactions = async () => {
@@ -76,3 +76,48 @@ const loadTransactions = async () => {
 };
 
 loadTransactions();
+
+// Submit handler and create transaction (POST)
+transactionForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+
+  try {
+    const transactionData = {
+      title: document.getElementById("title").value,
+      amount: Number(document.getElementById("amount").value),
+      type: document.getElementById("type").value,
+      category_id: Number(document.getElementById("category").value),
+      transaction_date: document.getElementById("transactionDate").value,
+    };
+
+    const response = await fetch(`${API_URL}/transactions`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(transactionData),
+    });
+
+    const result = await response.json(); // backend JSON response converted into JS obj
+    console.log(result);
+    /*
+    {
+    message: "Transaction created successfully",
+      transaction: {
+        id: 5,
+        title: "Movie",
+        amount: 10.00,
+        type: "expense",
+        category: "Entertainment",
+        transaction_date: "2026-06-04T16:00:00.000Z",
+        created_at: "2026-06-08T08:46:02.861Z"
+      }
+    }
+    */
+
+    transactionForm.reset(); // reset form fields
+    loadTransactions(); // rerender transaction table with new transaction added
+  } catch (error) {
+    console.error("Failed to create transaction:", error);
+  }
+});
