@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Personal Finance Management</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Personal Finance Management</h1>
+    </header>
+
+    <main>
+      <section>
+        <h2>Summary</h2>
+        <p>Total Income: $<span id="totalIncome">0</span></p>
+        <p>Total Expense: $<span id="totalExpense">0</span></p>
+        <p>Balance: $<span id="balance">0</span></p>
+      </section>
+
+      <section>
+        <h2>Add Transaction</h2>
+
+        <form id="transactionForm">
+          <input type="text" id="title" placeholder="Title" required />
+          <input
+            type="number"
+            id="amount"
+            placeholder="Amount"
+            step="0.01"
+            required
+          />
+
+          <select id="type" required>
+            <option value="">Select Type</option>
+            <option value="income">Income</option>
+            <option value="expense">Expense</option>
+          </select>
+
+          <!-- will be loaded from GET /api/categories, data comes from categories table -->
+          <select id="category" required>
+            <option value="">Select Category</option>
+          </select>
+
+          <input type="date" id="transactionDate" required />
+
+          <button type="submit">Add Transaction</button>
+        </form>
+      </section>
+
+      <section>
+        <h2>Transactions</h2>
+
+        <table border="1">
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Amount</th>
+              <th>Type</th>
+              <th>Category</th>
+              <th>Date</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="transactionTableBody">
+            <!-- 
+                will be loaded from GET /api/transactions,
+                data comes from transactions table joined with categories table
+            -->
+          </tbody>
+        </table>
+      </section>
+    </main>
+
+    <footer>
+      <p>Built with HTML, CSS, JavaScript, Node.js, Express and PostgreSQL</p>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
