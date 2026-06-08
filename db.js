@@ -1,4 +1,4 @@
-// Connect Node.js Express to PostgreSQL to create database connection
+// Connect Node.js Express to PostgreSQL using pg Pool to create database connection.
 
 import pg from "pg";
 import dotenv from "dotenv";

@@ -1,4 +1,4 @@
-// Create Node.js Express backend server
+// Starts Node.js Express backend server, uses middleware, connects routes.
 
 import express from "express";
 import cors from "cors";
@@ -32,7 +32,7 @@ app.get("/db-test", async (req, res) => {
       databaseTime: result.rows[0],
     });
   } catch (error) {
-    // Server error
+    // HTTP 500 Internal Server Error
     res.status(500).json({
       message: "Database connection failed",
       error: error.message,

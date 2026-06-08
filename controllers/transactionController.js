@@ -1,3 +1,5 @@
+// Handles CRUD, filtering, summary, SQL queries.
+
 import pool from "../db.js";
 
 /*
@@ -113,7 +115,7 @@ export const createTransaction = async (req, res) => {
     );
     console.log(result);
 
-    // Created
+    // HTTP 201 Created
     res.status(201).json({
       message: "Transaction created successfully",
       transaction: result.rows[0],
