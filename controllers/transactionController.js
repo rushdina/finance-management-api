@@ -73,6 +73,7 @@ export const getTransactionById = async (req, res) => {
         t.title,
         t.amount,
         t.type,
+        t.category_id,
         c.name AS category,
         t.transaction_date,
         t.created_at

@@ -8,6 +8,8 @@ const totalIncome = document.getElementById("totalIncome");
 const totalExpense = document.getElementById("totalExpense");
 const balance = document.getElementById("balance");
 
+let editTransactionId = null; // remember which transaction is currently being edited
+
 // Load categories from backend and display them in dropdown select
 const loadCategories = async () => {
   try {
@@ -65,7 +67,7 @@ const loadTransactions = async () => {
         <td>${transaction.category}</td>
         <td>${transaction.transaction_date}</td>
         <td>
-          <button>Edit</button>
+          <button onclick="editTransaction(${transaction.id})">Edit</button>
           <button onclick="deleteTransaction(${transaction.id})">Delete</button>
         </td>
       `;
@@ -173,6 +175,25 @@ const deleteTransaction = async (id) => {
     loadSummary();
   } catch (error) {
     console.error("Failed to delete transaction:", error);
+  }
+};
+
+// Edit transaction
+const editTransaction = async (id) => {
+  try {
+    const response = await fetch(`${API_URL}/transactions/${id}`);
+    const transaction = await response.json();
+
+    document.getElementById("title").value = transaction.title;
+    document.getElementById("amount").value = transaction.amount;
+    document.getElementById("type").value = transaction.type;
+    document.getElementById("category").value = transaction.category_id;
+    document.getElementById("transactionDate").value =
+      transaction.transaction_date.split("T")[0];
+
+    editTransactionId = id;
+  } catch (error) {
+    console.error("Failed to load transaction for editing:", error);
   }
 };
 
