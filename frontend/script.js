@@ -79,7 +79,11 @@ const loadTransactions = async () => {
   }
 };
 
-// Handles form submission and sends new transaction to backend
+/**
+ * Handles form submission and sends new transaction to backend
+ * - editTransactionId is null -> create new transaction using POST
+ * - editTransactionId has ID  -> update existing transaction using PUT
+ */
 transactionForm.addEventListener("submit", async (event) => {
   event.preventDefault();
 
@@ -92,8 +96,14 @@ transactionForm.addEventListener("submit", async (event) => {
       transaction_date: document.getElementById("transactionDate").value,
     };
 
-    const response = await fetch(`${API_URL}/transactions`, {
-      method: "POST",
+    const url = editTransactionId
+      ? `${API_URL}/transactions/${editTransactionId}`
+      : `${API_URL}/transactions`;
+
+    const method = editTransactionId ? "PUT" : "POST";
+
+    const response = await fetch(url, {
+      method: method,
       headers: {
         "Content-Type": "application/json",
       },
@@ -104,11 +114,11 @@ transactionForm.addEventListener("submit", async (event) => {
     console.log(result);
     /*
     {
-    message: "Transaction created successfully",
+    message: "Transaction created/updated successfully",
       transaction: {
         id: 6,
         title: "Shopee Refund",
-        amount: 12.50,
+        amount: "12.50",
         type: "income",
         category_id: 3,
         transaction_date: "2026-06-04T16:00:00.000Z",
@@ -118,10 +128,11 @@ transactionForm.addEventListener("submit", async (event) => {
     */
 
     transactionForm.reset(); // reset form fields
+    editTransactionId = null; // set back to null
     loadTransactions(); // rerender transaction table with new transaction added
     loadSummary(); // rerender summary
   } catch (error) {
-    console.error("Failed to create transaction:", error);
+    console.error("Failed to save transaction:", error);
   }
 });
 
