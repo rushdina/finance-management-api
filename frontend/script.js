@@ -66,7 +66,7 @@ const loadTransactions = async () => {
         <td>${transaction.transaction_date}</td>
         <td>
           <button>Edit</button>
-          <button>Delete</button>
+          <button onclick="deleteTransaction(${transaction.id})">Delete</button>
         </td>
       `;
 
@@ -141,6 +141,38 @@ const loadSummary = async () => {
     balance.textContent = summary.balance;
   } catch (error) {
     console.error("Failed to load summary:", error);
+  }
+};
+
+// Deletes a transaction from the database through backend API
+const deleteTransaction = async (id) => {
+  try {
+    // browser sends DELETE /api/transactions/5 to backend
+    const response = await fetch(`${API_URL}/transactions/${id}`, {
+      method: "DELETE",
+    });
+
+    const result = await response.json();
+    console.log(result);
+    /*
+    {
+      message: "Transaction deleted successfully",
+        transaction: {
+          id: 5,
+          title: "Movie",
+          amount: "10.00",
+          type: "expense",
+          category_id: 6,
+          transaction_date: "2026-06-04T16:00:00.000Z",
+          created_at: "2026-06-08T08:46:02.861Z"
+        }
+    }
+   */
+
+    loadTransactions();
+    loadSummary();
+  } catch (error) {
+    console.error("Failed to delete transaction:", error);
   }
 };
 
