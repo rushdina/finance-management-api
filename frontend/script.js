@@ -1,8 +1,12 @@
 const API_URL = "http://localhost:5000/api";
 
-const categorySelect = document.getElementById("category"); // <select id="category"></select>
+const categorySelect = document.getElementById("category");
 const transactionTableBody = document.getElementById("transactionTableBody");
 const transactionForm = document.getElementById("transactionForm");
+
+const totalIncome = document.getElementById("totalIncome");
+const totalExpense = document.getElementById("totalExpense");
+const balance = document.getElementById("balance");
 
 // Load categories from backend and display them in dropdown select
 const loadCategories = async () => {
@@ -28,8 +32,6 @@ const loadCategories = async () => {
     console.error("Failed to load categories:", error);
   }
 };
-
-loadCategories();
 
 // Load transactions from backend and display them in table
 const loadTransactions = async () => {
@@ -75,9 +77,7 @@ const loadTransactions = async () => {
   }
 };
 
-loadTransactions();
-
-// Submit handler and create transaction (POST)
+// Handles form submission and sends new transaction to backend
 transactionForm.addEventListener("submit", async (event) => {
   event.preventDefault();
 
@@ -104,11 +104,11 @@ transactionForm.addEventListener("submit", async (event) => {
     {
     message: "Transaction created successfully",
       transaction: {
-        id: 5,
-        title: "Movie",
-        amount: 10.00,
-        type: "expense",
-        category: "Entertainment",
+        id: 6,
+        title: "Shopee Refund",
+        amount: 12.50,
+        type: "income",
+        category_id: 3,
         transaction_date: "2026-06-04T16:00:00.000Z",
         created_at: "2026-06-08T08:46:02.861Z"
       }
@@ -117,7 +117,34 @@ transactionForm.addEventListener("submit", async (event) => {
 
     transactionForm.reset(); // reset form fields
     loadTransactions(); // rerender transaction table with new transaction added
+    loadSummary(); // rerender summary
   } catch (error) {
     console.error("Failed to create transaction:", error);
   }
 });
+
+// Loads summary totals from backend and displays them on page
+const loadSummary = async () => {
+  try {
+    const response = await fetch(`${API_URL}/transactions/summary`);
+    const summary = await response.json();
+    /*
+    {
+      total_income: "3000.00",
+      total_expense: "500.00",
+      balance: "2500.00"
+    }
+    */
+
+    totalIncome.textContent = summary.total_income;
+    totalExpense.textContent = summary.total_expense;
+    balance.textContent = summary.balance;
+  } catch (error) {
+    console.error("Failed to load summary:", error);
+  }
+};
+
+// Initial calls when page first loads
+loadCategories();
+loadTransactions();
+loadSummary();
