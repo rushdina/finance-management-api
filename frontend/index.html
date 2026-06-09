@@ -8,7 +8,7 @@
   </head>
   <body>
     <header>
-      <h1>Finance Management</h1>
+      <h1>Personal Finance Management</h1>
     </header>
 
     <main>
@@ -53,23 +53,23 @@
       </section>
 
       <section>
-        <h2>Filter Transactions</h2>
+        <div class="transaction-header">
+          <h2>Transactions</h2>
 
-        <select id="filterType">
-          <option value="">All Types</option>
-          <option value="income">Income</option>
-          <option value="expense">Expense</option>
-        </select>
+          <div class="filters">
+            <select id="filterType">
+              <option value="">All Types</option>
+              <option value="income">Income</option>
+              <option value="expense">Expense</option>
+            </select>
 
-        <select id="filterCategory">
-          <option value="">All Categories</option>
-        </select>
+            <select id="filterCategory">
+              <option value="">All Categories</option>
+            </select>
 
-        <button type="button" id="clearFiltersBtn">Clear Filters</button>
-      </section>
-
-      <section>
-        <h2>Transactions</h2>
+            <button type="button" id="clearFiltersBtn">Clear Filters</button>
+          </div>
+        </div>
 
         <table border="1">
           <thead>
