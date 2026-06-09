@@ -20,7 +20,7 @@ export const getTransactions = async (req, res) => {
         t.amount,
         t.type,
         c.name AS category,
-        t.transaction_date,
+        TO_CHAR(t.transaction_date, 'YYYY-MM-DD') AS transaction_date,
         t.created_at
       FROM transactions AS t
       INNER JOIN categories AS c
@@ -75,7 +75,7 @@ export const getTransactionById = async (req, res) => {
         t.type,
         t.category_id,
         c.name AS category,
-        t.transaction_date,
+        TO_CHAR(t.transaction_date, 'YYYY-MM-DD') AS transaction_date,
         t.created_at
       FROM transactions AS t
       INNER JOIN categories AS c
