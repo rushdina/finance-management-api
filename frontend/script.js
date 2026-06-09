@@ -147,6 +147,12 @@ transactionForm.addEventListener("submit", async (event) => {
     });
 
     const result = await response.json(); // backend JSON response converted into JS obj
+
+    if (!response.ok) {
+      alert(result.message);
+      return;
+    }
+
     console.log(result);
     /*
     {
@@ -208,12 +214,26 @@ const loadSummary = async () => {
 // Deletes a transaction from the database through backend API, rerender table and summary
 const deleteTransaction = async (id) => {
   try {
+    const confirmed = confirm(
+      "Are you sure you want to delete this transaction?",
+    );
+
+    if (!confirmed) {
+      return;
+    }
+
     // browser sends DELETE /api/transactions/5 to backend
     const response = await fetch(`${API_URL}/transactions/${id}`, {
       method: "DELETE",
     });
 
     const result = await response.json();
+
+    if (!response.ok) {
+      alert(result.message);
+      return;
+    }
+
     console.log(result);
     /*
     {
@@ -242,6 +262,11 @@ const editTransaction = async (id) => {
   try {
     const response = await fetch(`${API_URL}/transactions/${id}`);
     const transaction = await response.json();
+
+    if (!response.ok) {
+      alert(transaction.message);
+      return;
+    }
 
     document.getElementById("title").value = transaction.title;
     document.getElementById("amount").value = transaction.amount;
