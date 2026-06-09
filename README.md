@@ -4,7 +4,7 @@ A RESTful backend API for managing financial transactions, built with `Node.js`,
 
 A lightweight `HTML`, `CSS`, and `JavaScript` frontend was developed as an API consumer to demonstrate end-to-end integration between the client, server, and database layers.
 
-This project was built to strengthen practical backend development skills, including REST API design, database modeling, SQL query development, middleware validation, and integrating Node.js applications with PostgreSQL databases.
+This project was built to strengthen practical backend development skills, including `REST API` design, database modeling, `SQL` query development, middleware validation, and integrating `Node.js` applications with `PostgreSQL` databases.
 
 ## 🛠️ Technologies Used
 
@@ -44,7 +44,7 @@ DB_PORT=5432
 
 **4. Set up the PostgreSQL database**
 
-Execute the SQL statements in `schema.sql` using **pgAdmin Query Tool** to create the database schema and insert the initial category data.
+Execute the `SQL` statements in `schema.sql` using **pgAdmin Query Tool** to create the database schema and insert the initial category data.
 
 **5. Start the backend server**
 
@@ -82,7 +82,7 @@ Open `frontend/index.html` using a local development server (e.g., `VS Code Live
 ### Database Integration
 
 - Connected `Node.js` applications to `PostgreSQL` using connection pooling
-- Executed parameterized `SQL` queries to prevent SQL injection attacks
+- Executed parameterized `SQL` queries to prevent `SQL` injection attacks
 - Implemented relational database design using foreign key constraints
 
 ### Middleware Validation
@@ -95,7 +95,7 @@ Open `frontend/index.html` using a local development server (e.g., `VS Code Live
 
 ### Financial Summary Endpoint
 
-- Aggregated transaction data using SQL functions
+- Aggregated transaction data using `SQL` functions
 - Calculated:
   - Total income
   - Total expenses
@@ -119,7 +119,7 @@ Open `frontend/index.html` using a local development server (e.g., `VS Code Live
 
 - **_Challenge:_** Support filtering transactions by type, category, both filters together, or no filters without writing separate `SQL` queries for each scenario.
 
-- **_Solution:_** Constructed `SQL` queries dynamically using arrays for conditions and parameterized placeholders, resulting in a flexible, maintainable, and SQL injection-resistant solution.
+- **_Solution:_** Constructed `SQL` queries dynamically using arrays for conditions and parameterized placeholders, resulting in a flexible, maintainable, and `SQL` injection-resistant solution.
 
 **2. Understanding End-to-End Request–Response Flow**
 
