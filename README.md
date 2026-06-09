@@ -62,7 +62,7 @@ Open `frontend/index.html` using a local development server (e.g., `VS Code Live
 
 ### RESTful API Development
 
-- Designed RESTful endpoints following standard `HTTP` conventions
+- Designed `RESTful` endpoints following standard `HTTP` conventions
 - Implemented resource-based routing for transactions and categories
 
 ### CRUD Operations
@@ -82,7 +82,7 @@ Open `frontend/index.html` using a local development server (e.g., `VS Code Live
 ### Database Integration
 
 - Connected `Node.js` applications to `PostgreSQL` using connection pooling
-- Executed parameterized SQL queries to prevent SQL injection attacks
+- Executed parameterized `SQL` queries to prevent SQL injection attacks
 - Implemented relational database design using foreign key constraints
 
 ### Middleware Validation
@@ -135,7 +135,7 @@ Open `frontend/index.html` using a local development server (e.g., `VS Code Live
 
 **4. Handling Date Consistency Between PostgreSQL and the Browser**
 
-- **_Challenge:_** `PostgreSQL` DATE values were returned as ISO timestamp strings due to timezone conversions, causing unexpected date displays in the frontend.
+- **_Challenge:_** `PostgreSQL` `DATE` values were returned as ISO timestamp strings due to timezone conversions, causing unexpected date displays in the frontend.
 
 - **_Solution:_** Formatted dates directly in `SQL` using `TO_CHAR(..., 'YYYY-MM-DD')` to ensure consistent date representation throughout the application.
 
