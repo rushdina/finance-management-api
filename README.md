@@ -1,6 +1,6 @@
 # 💰 Finance Management API
 
-A RESTful backend API for managing financial transactions, built with `Node.js`, `Express`, and `PostgreSQL`. The application provides endpoints to **create**, **retrieve**, **update**, **delete**, filter, and summarize income and expense records stored in a relational database.
+A `RESTful` backend API for managing financial transactions, built with `Node.js`, `Express`, and `PostgreSQL`. The application provides endpoints to **create**, **retrieve**, **update**, **delete**, filter, and summarize income and expense records stored in a relational database.
 
 A lightweight `HTML`, `CSS`, and `JavaScript` frontend was developed as an API consumer to demonstrate end-to-end integration between the client, server, and database layers.
 
