@@ -164,6 +164,7 @@ td button:last-child:hover {
 }
 
 footer {
+  font-size: small;
   text-align: center;
   padding: 1.5rem;
   color: #64748b;
