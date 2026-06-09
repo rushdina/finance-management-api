@@ -12,9 +12,12 @@ const filterType = document.getElementById("filterType");
 const filterCategory = document.getElementById("filterCategory");
 const clearFiltersBtn = document.getElementById("clearFiltersBtn");
 
+const submitBtn = document.getElementById("submitBtn");
+const cancelEditBtn = document.getElementById("cancelEditBtn");
+
 let editTransactionId = null; // remember which transaction is currently being edited
 
-// Load categories from backend and display them in dropdown select
+// Load GET categories from backend and display them in dropdown select
 const loadCategories = async () => {
   try {
     // browser sends HTTP GET request /api/categories to nodejs express backend server
@@ -47,7 +50,7 @@ const loadCategories = async () => {
   }
 };
 
-// Load transactions from backend and display them in table
+// Load GET transactions from backend, apply filters, and display them in table
 const loadTransactions = async () => {
   try {
     const type = filterType.value;
@@ -113,7 +116,7 @@ const loadTransactions = async () => {
 };
 
 /**
- * Handles form submission and sends new transaction to backend
+ * Form submit listener handles form submission and sends new transaction to backend
  * - editTransactionId is null -> create new transaction using POST
  * - editTransactionId has ID  -> update existing transaction using PUT
  */
@@ -162,6 +165,10 @@ transactionForm.addEventListener("submit", async (event) => {
 
     transactionForm.reset(); // reset form fields
     editTransactionId = null; // set back to null
+
+    submitBtn.textContent = "Add Transaction";
+    cancelEditBtn.style.display = "none";
+
     loadTransactions(); // rerender transaction table with new transaction added
     loadSummary(); // rerender summary
   } catch (error) {
@@ -169,7 +176,15 @@ transactionForm.addEventListener("submit", async (event) => {
   }
 });
 
-// Loads summary totals from backend and displays them on page
+// Exits edit mode
+cancelEditBtn.addEventListener("click", () => {
+  transactionForm.reset();
+  editTransactionId = null;
+  submitBtn.textContent = "Add Transaction";
+  cancelEditBtn.style.display = "none";
+});
+
+// Loads GET summary totals from backend and displays them on page
 const loadSummary = async () => {
   try {
     const response = await fetch(`${API_URL}/transactions/summary`);
@@ -190,7 +205,7 @@ const loadSummary = async () => {
   }
 };
 
-// Deletes a transaction from the database through backend API
+// Deletes a transaction from the database through backend API, rerender table and summary
 const deleteTransaction = async (id) => {
   try {
     // browser sends DELETE /api/transactions/5 to backend
@@ -222,7 +237,7 @@ const deleteTransaction = async (id) => {
   }
 };
 
-// Edit transaction
+// Edit transaction, GET id transaction and fill the same form
 const editTransaction = async (id) => {
   try {
     const response = await fetch(`${API_URL}/transactions/${id}`);
@@ -236,12 +251,15 @@ const editTransaction = async (id) => {
       transaction.transaction_date;
 
     editTransactionId = id;
+
+    submitBtn.textContent = "Update Transaction";
+    cancelEditBtn.style.display = "inline-block";
   } catch (error) {
     console.error("Failed to load transaction for editing:", error);
   }
 };
 
-// Automatically update when filters change and allows users to clear all filters
+// Rerender table when filters change and allow clear all filters
 filterType.addEventListener("change", loadTransactions);
 filterCategory.addEventListener("change", loadTransactions);
 clearFiltersBtn.addEventListener("click", () => {
