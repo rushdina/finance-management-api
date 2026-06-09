@@ -117,39 +117,39 @@ Open `frontend/index.html` using a local development server (e.g., `VS Code Live
 
 **1. Dynamic SQL Filtering with Multiple Query Parameters**
 
-- **_Challenge:_** Support filtering transactions by type, category, both filters together, or no filters without writing separate SQL queries for each scenario.
+- **_Challenge:_** Support filtering transactions by type, category, both filters together, or no filters without writing separate `SQL` queries for each scenario.
 
-- **_Solution:_** Constructed SQL queries dynamically using arrays for conditions and parameterized placeholders, resulting in a flexible, maintainable, and SQL injection-resistant solution.
+- **_Solution:_** Constructed `SQL` queries dynamically using arrays for conditions and parameterized placeholders, resulting in a flexible, maintainable, and SQL injection-resistant solution.
 
 **2. Understanding End-to-End Request–Response Flow**
 
-- **_Challenge:_** Understanding how data moves between the frontend, Express server, PostgreSQL database, and back to the browser during CRUD operations.
+- **_Challenge:_** Understanding how data moves between the frontend, `Express` server, `PostgreSQL` database, and back to the browser during `CRUD` operations.
 
-- **_Solution:_** Traced and documented the complete request-response lifecycle, from Fetch API requests through Express routes, middleware, controllers, PostgreSQL queries, JSON responses, and DOM updates.
+- **_Solution:_** Traced and documented the complete request-response lifecycle, from `Fetch API` requests through `Express` routes, middleware, controllers, `PostgreSQL` queries, `JSON` responses, and DOM updates.
 
 **3. Avoiding Duplicated Validation Logic**
 
 - **_Challenge:_** Both transaction creation and update operations required identical validation rules, leading to potential code duplication.
 
-- **_Solution:_** Extracted validation logic into reusable Express middleware, improving maintainability and separation of concerns.
+- **_Solution:_** Extracted validation logic into reusable `Express` middleware, improving maintainability and separation of concerns.
 
 **4. Handling Date Consistency Between PostgreSQL and the Browser**
 
-- **_Challenge:_** PostgreSQL DATE values were returned as ISO timestamp strings due to timezone conversions, causing unexpected date displays in the frontend.
+- **_Challenge:_** `PostgreSQL` DATE values were returned as ISO timestamp strings due to timezone conversions, causing unexpected date displays in the frontend.
 
-- **_Solution:_** Formatted dates directly in SQL using TO_CHAR(..., 'YYYY-MM-DD') to ensure consistent date representation throughout the application.
+- **_Solution:_** Formatted dates directly in `SQL` using `TO_CHAR(..., 'YYYY-MM-DD')` to ensure consistent date representation throughout the application.
 
 **5. Implementing CRUD Operations with Express and PostgreSQL**
 
-- **_Challenge:_** Designing RESTful endpoints that correctly performed create, read, update, and delete operations while returning meaningful HTTP status codes and responses.
+- **_Challenge:_** Designing `RESTful` endpoints that correctly performed create, read, update, and delete operations while returning meaningful `HTTP` status codes and responses.
 
-- **_Solution:_** Implemented structured controllers using parameterized SQL queries, proper error handling, and appropriate HTTP response codes to build a reliable API.
+- **_Solution:_** Implemented structured controllers using parameterized `SQL` queries, proper error handling, and appropriate `HTTP` response codes to build a reliable API.
 
 **6. Integrating the Frontend with the Backend API**
 
-- **_Challenge:_** Connecting a JavaScript frontend to a Node.js backend while ensuring data was correctly exchanged between the client and server.
+- **_Challenge:_** Connecting a `JavaScript` frontend to a `Node.js` backend while ensuring data was correctly exchanged between the client and server.
 
-- **_Solution:_** Used the Fetch API to send HTTP requests, process JSON responses, handle errors gracefully, and dynamically update the user interface after CRUD operations.
+- **_Solution:_** Used the `Fetch API` to send `HTTP` requests, process `JSON` responses, handle errors gracefully, and dynamically update the user interface after `CRUD` operations.
 
 ## 📚 Learning Outcomes
 
