@@ -1,5 +1,5 @@
 {
-  "name": "personal-finance-management-api",
+  "name": "finance-management-api",
   "version": "1.0.0",
   "description": "REST API for managing personal financial transactions using Node.js, Express, and PostgreSQL",
   "main": "server.js",
