@@ -8,6 +8,10 @@ const totalIncome = document.getElementById("totalIncome");
 const totalExpense = document.getElementById("totalExpense");
 const balance = document.getElementById("balance");
 
+const filterType = document.getElementById("filterType");
+const filterCategory = document.getElementById("filterCategory");
+const clearFiltersBtn = document.getElementById("clearFiltersBtn");
+
 let editTransactionId = null; // remember which transaction is currently being edited
 
 // Load categories from backend and display them in dropdown select
@@ -24,11 +28,19 @@ const loadCategories = async () => {
     */
 
     categories.forEach((category) => {
+      // form dropdown
       const option = document.createElement("option");
       option.value = category.id;
       option.textContent = category.name;
 
       categorySelect.appendChild(option);
+
+      // filter dropdown
+      const filterOption = document.createElement("option");
+      filterOption.value = category.name; // because backend filter expects /api/transactions?category=Food
+      filterOption.textContent = category.name;
+
+      filterCategory.appendChild(filterOption);
     });
   } catch (error) {
     console.error("Failed to load categories:", error);
@@ -38,8 +50,29 @@ const loadCategories = async () => {
 // Load transactions from backend and display them in table
 const loadTransactions = async () => {
   try {
-    // sends HTTP GET /api/transactions
-    const response = await fetch(`${API_URL}/transactions`);
+    const type = filterType.value;
+    const category = filterCategory.value;
+
+    let url = `${API_URL}/transactions`;
+
+    const params = new URLSearchParams(); // empty query parameter obj
+
+    if (type) {
+      params.append("type", type); // e.g type=expense
+    }
+
+    if (category) {
+      params.append("category", category); // e.g type=expense&category=Food
+    }
+
+    // Checks whether there are any query parameters
+    if (params.toString()) {
+      url += `?${params.toString()}`; // http://localhost:5000/api/transactions?type=expense&category=Food
+    }
+
+    // Sends HTTP GET /api/transactions
+    const response = await fetch(url);
+
     const transactions = await response.json();
     /*
     [
@@ -207,6 +240,15 @@ const editTransaction = async (id) => {
     console.error("Failed to load transaction for editing:", error);
   }
 };
+
+// Automatically update when filters change and allows users to clear all filters
+filterType.addEventListener("change", loadTransactions);
+filterCategory.addEventListener("change", loadTransactions);
+clearFiltersBtn.addEventListener("click", () => {
+  filterType.value = "";
+  filterCategory.value = "";
+  loadTransactions();
+});
 
 // Initial calls when page first loads
 loadCategories();
