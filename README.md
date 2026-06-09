@@ -149,7 +149,7 @@ Open `frontend/index.html` using a local development server (e.g., `VS Code Live
 
 - **_Challenge:_** Connecting a `JavaScript` frontend to a `Node.js` backend while ensuring data was correctly exchanged between the client and server.
 
-- **_Solution:_** Used the `Fetch API` to send `HTTP` requests, process `JSON` responses, handle errors gracefully, and dynamically update the user interface after `CRUD` operations.
+- **_Solution:_** Used the `Fetch API` to send `HTTP` requests, process `JSON` responses, handle errors, and dynamically update the user interface after `CRUD` operations.
 
 ## 📚 Learning Outcomes
 
