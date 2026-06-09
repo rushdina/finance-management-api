@@ -233,7 +233,7 @@ const editTransaction = async (id) => {
     document.getElementById("type").value = transaction.type;
     document.getElementById("category").value = transaction.category_id;
     document.getElementById("transactionDate").value =
-      transaction.transaction_date.split("T")[0];
+      transaction.transaction_date;
 
     editTransactionId = id;
   } catch (error) {
