@@ -13,9 +13,9 @@ export const validateTransaction = (req, res, next) => {
   if (
     !title?.trim() ||
     amount === undefined ||
-    !type?.trim() ||
+    !type ||
     category_id === undefined ||
-    !transaction_date?.trim()
+    !transaction_date
   ) {
     return res.status(400).json({
       message: "All fields are required",
