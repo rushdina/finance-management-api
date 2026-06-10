@@ -293,6 +293,10 @@ clearFiltersBtn.addEventListener("click", () => {
   loadTransactions();
 });
 
+// Set its latest selectable date to today to prevent users from selecting a date after e.g 2026-06-10
+const today = new Date().toISOString().split("T")[0]; // e.g "2026-06-10"
+document.getElementById("transactionDate").max = today; // <input type="date" id="transactionDate" max="2026-06-10">
+
 // Initial calls when page first loads
 loadCategories();
 loadTransactions();
