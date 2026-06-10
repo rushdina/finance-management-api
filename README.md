@@ -128,9 +128,9 @@ The application uses a relational `PostgreSQL` database consisting of two tables
 categories (1) ───────< (many) transactions
 ```
 
-* `transactions.category_id` references `categories.id`
-* Database constraints (`NOT NULL`, `CHECK`, `FOREIGN KEY`) help ensure data integrity
-* `ON DELETE RESTRICT` prevents deletion of categories that are associated with existing transactions
+- `transactions.category_id` references `categories.id`
+- Database constraints (`NOT NULL`, `CHECK`, `FOREIGN KEY`) help ensure data integrity
+- `ON DELETE RESTRICT` prevents deletion of categories that are associated with existing transactions
 
 > Detailed database creation scripts and seed data are available in `schema.sql`.
 
@@ -191,3 +191,7 @@ categories (1) ───────< (many) transactions
 - Implement automated testing for API endpoints and middleware
 - Introduce `Docker` and `CI/CD pipelines` to streamline deployment
 - Enhance the API with pagination, sorting, and advanced filtering
+
+## 📸 Application Preview
+
+![Finance Management Application](./assets/finance-management-preview.png)

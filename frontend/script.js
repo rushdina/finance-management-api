@@ -102,7 +102,7 @@ const loadTransactions = async () => {
         <td>${transaction.type}</td>
         <td>${transaction.category}</td>
         <td>${transaction.transaction_date}</td>
-        <td>
+        <td class="action-buttons">
           <button onclick="editTransaction(${transaction.id})">Edit</button>
           <button onclick="deleteTransaction(${transaction.id})">Delete</button>
         </td>

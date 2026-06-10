@@ -48,7 +48,7 @@ export const getTransactions = async (req, res) => {
     }
 
     // End query with ORDER BY
-    query += ` ORDER BY t.id ASC`;
+    query += ` ORDER BY t.transaction_date DESC, t.id DESC`;
 
     const result = await pool.query(query, values);
 

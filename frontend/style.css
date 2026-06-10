@@ -64,6 +64,12 @@ select:focus {
   box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.15);
 }
 
+.form-actions {
+  grid-column: 1 / -1;
+  display: flex;
+  gap: 1rem;
+}
+
 button {
   background: #0f766e;
   color: white;
@@ -74,6 +80,10 @@ button {
 
 button:hover {
   background: #115e59;
+}
+
+.form-actions button {
+  width: 100%;
 }
 
 #cancelEditBtn,
@@ -108,7 +118,6 @@ section:first-of-type p {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1rem;
-  /* gap: 1rem; */
 }
 
 .transaction-header h2 {
@@ -118,12 +127,6 @@ section:first-of-type p {
 .filters {
   display: flex;
   gap: 0.75rem;
-  /* flex-wrap: wrap; */
-}
-
-.filters select,
-.filters button {
-  padding: 0.75rem;
 }
 
 table {
@@ -149,18 +152,24 @@ tr:hover {
   background: #f0fdfa;
 }
 
-td button {
-  margin-right: 0.4rem;
-  padding: 0.5rem 0.7rem;
-  font-size: 0.9rem;
-}
-
 td button:last-child {
   background: #dc2626;
 }
 
 td button:last-child:hover {
   background: #b91c1c;
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  gap: 0.5rem;
+}
+
+.action-buttons button {
+  width: 100%;
+  font-size: 0.9rem;
 }
 
 footer {
@@ -186,6 +195,10 @@ footer {
 
   section:last-of-type {
     overflow-x: auto;
+  }
+
+  .form-actions {
+    flex-direction: column;
   }
 
   table {
