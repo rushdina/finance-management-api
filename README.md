@@ -113,6 +113,27 @@ Open `frontend/index.html` using a local development server (e.g., `VS Code Live
 | PUT    | `/api/transactions/:id`     | Update an existing transaction                |
 | DELETE | `/api/transactions/:id`     | Delete a transaction                          |
 
+## 🗄️ Database Schema
+
+The application uses a relational `PostgreSQL` database consisting of two tables:
+
+| Table          | Purpose                                                              |
+| -------------- | -------------------------------------------------------------------- |
+| `categories`   | Stores predefined transaction categories (e.g., Food, Salary, Bills) |
+| `transactions` | Stores income and expense records linked to categories               |
+
+### Relationship
+
+```text
+categories (1) ───────< (many) transactions
+```
+
+* `transactions.category_id` references `categories.id`
+* Database constraints (`NOT NULL`, `CHECK`, `FOREIGN KEY`) help ensure data integrity
+* `ON DELETE RESTRICT` prevents deletion of categories that are associated with existing transactions
+
+> Detailed database creation scripts and seed data are available in `schema.sql`.
+
 ## 🧠 Challenges & Solutions
 
 **1. Dynamic SQL Filtering with Multiple Query Parameters**
