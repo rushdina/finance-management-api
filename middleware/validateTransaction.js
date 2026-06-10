@@ -36,6 +36,14 @@ export const validateTransaction = (req, res, next) => {
     });
   }
 
+  // Check date selected is valid
+  const today = new Date().toISOString().split("T")[0];
+  if (transaction_date > today) {
+    return res.status(400).json({
+      message: "Transaction date cannot be in the future",
+    });
+  }
+
   // All validations passed, execute the next middleware/controller
   next();
 };
