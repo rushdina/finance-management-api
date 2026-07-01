@@ -6,6 +6,10 @@ A lightweight `HTML`, `CSS`, and `JavaScript` frontend was developed as an API c
 
 This project was built to strengthen practical backend development skills, including `REST API` design, database modeling, `SQL` query development, middleware validation, and integrating `Node.js` applications with `PostgreSQL` databases.
 
+## 📸 Application Preview
+
+![Finance Management Application](./assets/finance-management-preview.png)
+
 ## 🛠️ Technologies Used
 
 **Backend:** `Node.js`, `Express.js`, `PostgreSQL`, `SQL`, `pg` (Node PostgreSQL client), `dotenv`, `CORS` middleware
@@ -191,7 +195,3 @@ categories (1) ───────< (many) transactions
 - Implement automated testing for API endpoints and middleware
 - Introduce `Docker` and `CI/CD pipelines` to streamline deployment
 - Enhance the API with pagination, sorting, and advanced filtering
-
-## 📸 Application Preview
-
-![Finance Management Application](./assets/finance-management-preview.png)
