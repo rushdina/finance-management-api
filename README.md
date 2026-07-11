@@ -6,11 +6,13 @@ A lightweight `HTML`, `CSS`, and `JavaScript` frontend was developed as an API c
 
 This project was built to strengthen practical backend development skills, including `REST API` design, database modeling, `SQL` query development, middleware validation, and integrating `Node.js` applications with `PostgreSQL` databases.
 
-## 🌐 Live Demo
+## 📷 Application Preview
 
+<!--
 Frontend: https://finance-management-rushdina.netlify.app/
 
-Backend API: https://finance-management-api-pmni.onrender.com
+Backend API: https://finance-management-api-pmni.onrender.com-
+-->
 
 ![Finance Management Application](./assets/finance-management-preview.png)
 
@@ -20,7 +22,7 @@ Backend API: https://finance-management-api-pmni.onrender.com
 
 **Development Tools:** `Postman`, `pgAdmin`, `Nodemon`, `Visual Studio Code`
 
-**Frontend (API Consumer):** `HTML5`, `CSS3`, `Vanilla JavaScript`, `Fetch API`
+**Frontend (API Consumer):** `HTML`, `CSS`, `JavaScript`, `Fetch API`
 
 ## ⚙️ Installation & Setup
 
