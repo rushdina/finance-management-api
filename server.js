@@ -18,7 +18,7 @@ app.use("/api/categories", categoryRoutes); // localhost:5000/api/categories
 app.use("/api/transactions", transactionRoutes); // localhost:5000/api/transactions
 
 app.get("/", (req, res) => {
-  res.send("Personal Finance Management API is running");
+  res.send("Finance Management API is running");
 });
 
 // localhost:5000/db-test

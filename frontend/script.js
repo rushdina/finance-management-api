@@ -1,4 +1,5 @@
-const API_URL = "http://localhost:5000/api";
+// const API_URL = "http://localhost:5000/api";
+const API_URL = "https://finance-management-api-pmni.onrender.com/api";
 
 const categorySelect = document.getElementById("category");
 const transactionTableBody = document.getElementById("transactionTableBody");
