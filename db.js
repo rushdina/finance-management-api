@@ -15,10 +15,17 @@ const pool = new Pool({
   // port: process.env.DB_PORT,
 
   connectionString: process.env.DATABASE_URL,
+
+  // Secure Sockets Layer encrypts communication between Express server and PostgreSQL
+  // preventing data from being read while it travels across internet
   ssl:
     process.env.NODE_ENV === "production"
-      ? { rejectUnauthorized: false }
-      : false,
+      ? // If application is running in production, enable SSL.
+        // PostgreSQL database will use encrypted connection.
+        // SSL checks whether database's SSL certificate is signed by trusted Certificate Authority (CA)
+        { rejectUnauthorized: false } // use ssl encryption but dont reject connection if certificate isnt verified
+      : // If running locally (development), disable SSL for local database
+        false,
 });
 
 export default pool;
