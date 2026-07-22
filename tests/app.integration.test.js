@@ -86,6 +86,52 @@ describe("Transaction API", () => {
       transaction_date: "2026-07-03",
     }); // controller orders results using ORDER BY t.transaction_date DESC, t.id DESC
   });
+
+  // type-filter test
+  it("filters transactions by type", async () => {
+    const response = await request(app).get("/api/transactions?type=expense");
+
+    expect(response.status).toBe(200);
+    expect(Array.isArray(response.body)).toBe(true);
+    expect(response.body.length).toBe(2);
+
+    expect(
+      response.body.every((transaction) => transaction.type === "expense"),
+    ).toBe(true);
+  });
+
+  // category-filter test
+  it("filters transactions by category", async () => {
+    const response = await request(app).get("/api/transactions?category=Food");
+
+    expect(response.status).toBe(200);
+    expect(Array.isArray(response.body)).toBe(true);
+    expect(response.body.length).toBe(1);
+
+    expect(response.body[0]).toMatchObject({
+      title: "Lunch",
+      type: "expense",
+      category: "Food",
+    });
+  });
+
+  // combined-filter test
+  it("filters transactions by type and category", async () => {
+    const response = await request(app).get(
+      "/api/transactions?type=expense&category=Food",
+    );
+
+    expect(response.status).toBe(200);
+    expect(Array.isArray(response.body)).toBe(true);
+    expect(response.body.length).toBe(1);
+
+    expect(response.body[0]).toMatchObject({
+      title: "Lunch",
+      amount: "12.50",
+      type: "expense",
+      category: "Food",
+    });
+  });
 });
 
 // Runs once after every test inside suite has finished
