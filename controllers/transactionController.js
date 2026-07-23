@@ -145,7 +145,14 @@ export const updateTransaction = async (req, res) => {
         category_id = $4,
         transaction_date = $5
       WHERE id = $6
-      RETURNING *
+      RETURNING
+        id,
+        title,
+        amount,
+        type,
+        category_id,
+        TO_CHAR(transaction_date, 'YYYY-MM-DD') AS transaction_date,
+        created_at
     `,
       [title, amount, type, category_id, transaction_date, id],
     );

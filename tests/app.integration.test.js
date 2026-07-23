@@ -154,7 +154,7 @@ describe("Transaction API", () => {
   it("returns 404 when transaction does not exist", async () => {
     const response = await request(app).get("/api/transactions/999");
 
-    expect(response.status).toBe(404);
+    expect(response.status).toBe(404); // not found, requested resource doesn't exist
     expect(response.body).toEqual({
       message: "Transaction not found",
     });
@@ -203,6 +203,7 @@ describe("Transaction API", () => {
 
   // Test invalid data for validation case
   it("returns 400 when creating a transaction with an invalid amount", async () => {
+    // Validation middleware rejects missing fields, invalid type, or amount <= 0
     const response = await request(app).post("/api/transactions").send({
       title: "Invalid Transaction",
       amount: 0,
@@ -211,9 +212,83 @@ describe("Transaction API", () => {
       transaction_date: "2026-07-04",
     });
 
-    expect(response.status).toBe(400);
+    expect(response.status).toBe(400); // bad request, client sent invalid data
     expect(response.body).toEqual({
       message: "Amount must be greater than 0",
+    });
+  });
+
+  // test PUT /api/transactions/:id
+  // update an existing transaction, save the changes in PostgreSQL and return 404 for a missing transaction
+  it("updates an existing transaction", async () => {
+    const updatedTransaction = {
+      title: "Team Lunch",
+      amount: 25,
+      type: "expense",
+      category_id: 1,
+      transaction_date: "2026-07-05",
+    };
+
+    const response = await request(app)
+      .put("/api/transactions/2")
+      .send(updatedTransaction);
+
+    expect(response.status).toBe(200);
+    expect(response.body.message).toBe("Transaction updated successfully");
+
+    expect(response.body.transaction).toMatchObject({
+      id: 2,
+      title: "Team Lunch",
+      amount: "25.00",
+      type: "expense",
+      category_id: 1,
+      transaction_date: "2026-07-05",
+    });
+
+    // check that the row was actually changed in the test database
+    const databaseResult = await pool.query(
+      "SELECT * FROM transactions WHERE id = $1",
+      [2],
+    );
+
+    expect(databaseResult.rows[0]).toMatchObject({
+      id: 2,
+      title: "Team Lunch",
+      amount: "25.00",
+      type: "expense",
+      category_id: 1,
+    });
+  });
+
+  // not-found test
+  it("returns 404 when updating a transaction that does not exist", async () => {
+    const response = await request(app).put("/api/transactions/999").send({
+      title: "Missing Transaction",
+      amount: 20,
+      type: "expense",
+      category_id: 1,
+      transaction_date: "2026-07-05",
+    });
+
+    expect(response.status).toBe(404);
+    expect(response.body).toEqual({
+      message: "Transaction not found",
+    });
+  });
+
+  // validation case to confirm the middleware still runs for updates
+  it("returns 400 when updating a transaction with an invalid type", async () => {
+    const response = await request(app).put("/api/transactions/2").send({
+      title: "Invalid Update",
+      amount: 20,
+      type: "transfer",
+      category_id: 1,
+      transaction_date: "2026-07-05",
+    });
+
+    expect(response.status).toBe(400); // bad request
+    expect(response.body).toEqual({
+      message: "Type must be either 'income' or 'expense'",
     });
   });
 });
