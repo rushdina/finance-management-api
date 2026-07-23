@@ -132,6 +132,33 @@ describe("Transaction API", () => {
       category: "Food",
     });
   });
+
+  // test GET /api/transactions/:id to retrieve one existing transaction
+  // and return 404 when the transaction does not exist
+  it("returns one transaction by ID", async () => {
+    const response = await request(app).get("/api/transactions/2");
+
+    expect(response.status).toBe(200);
+
+    expect(response.body).toMatchObject({
+      id: 2,
+      title: "Lunch",
+      amount: "12.50",
+      type: "expense",
+      category_id: 1,
+      category: "Food",
+      transaction_date: "2026-07-02",
+    });
+  });
+
+  it("returns 404 when transaction does not exist", async () => {
+    const response = await request(app).get("/api/transactions/999");
+
+    expect(response.status).toBe(404);
+    expect(response.body).toEqual({
+      message: "Transaction not found",
+    });
+  });
 });
 
 // Runs once after every test inside suite has finished
