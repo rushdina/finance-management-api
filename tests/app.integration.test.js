@@ -159,6 +159,63 @@ describe("Transaction API", () => {
       message: "Transaction not found",
     });
   });
+
+  // test POST /api/transactions
+  it("creates a new transaction", async () => {
+    const newTransaction = {
+      title: "Freelance Payment",
+      amount: 500,
+      type: "income",
+      category_id: 4,
+      transaction_date: "2026-07-04",
+    };
+
+    const response = await request(app)
+      .post("/api/transactions")
+      .send(newTransaction);
+
+    expect(response.status).toBe(201);
+    expect(response.body.message).toBe("Transaction created successfully");
+
+    expect(response.body.transaction).toMatchObject({
+      id: 4,
+      title: "Freelance Payment",
+      amount: "500.00",
+      type: "income",
+      category_id: 4,
+    });
+
+    // confirm it was really inserted into PostgreSQL
+    // the row actually exists in the database
+    const databaseResult = await pool.query(
+      "SELECT * FROM transactions WHERE id = $1",
+      [response.body.transaction.id],
+    );
+
+    expect(databaseResult.rows.length).toBe(1);
+    expect(databaseResult.rows[0]).toMatchObject({
+      title: "Freelance Payment",
+      amount: "500.00",
+      type: "income",
+      category_id: 4,
+    });
+  });
+
+  // Test invalid data for validation case
+  it("returns 400 when creating a transaction with an invalid amount", async () => {
+    const response = await request(app).post("/api/transactions").send({
+      title: "Invalid Transaction",
+      amount: 0,
+      type: "expense",
+      category_id: 1,
+      transaction_date: "2026-07-04",
+    });
+
+    expect(response.status).toBe(400);
+    expect(response.body).toEqual({
+      message: "Amount must be greater than 0",
+    });
+  });
 });
 
 // Runs once after every test inside suite has finished
