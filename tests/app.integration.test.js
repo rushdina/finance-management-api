@@ -132,6 +132,227 @@ describe("Transaction API", () => {
       category: "Food",
     });
   });
+
+  // test GET /api/transactions/:id to retrieve one existing transaction
+  // and return 404 when the transaction does not exist
+  it("returns one transaction by ID", async () => {
+    const response = await request(app).get("/api/transactions/2");
+
+    expect(response.status).toBe(200);
+
+    expect(response.body).toMatchObject({
+      id: 2,
+      title: "Lunch",
+      amount: "12.50",
+      type: "expense",
+      category_id: 1,
+      category: "Food",
+      transaction_date: "2026-07-02",
+    });
+  });
+
+  it("returns 404 when transaction does not exist", async () => {
+    const response = await request(app).get("/api/transactions/999");
+
+    expect(response.status).toBe(404); // not found, requested resource doesn't exist
+    expect(response.body).toEqual({
+      message: "Transaction not found",
+    });
+  });
+
+  // test POST /api/transactions
+  it("creates a new transaction", async () => {
+    const newTransaction = {
+      title: "Freelance Payment",
+      amount: 500,
+      type: "income",
+      category_id: 4,
+      transaction_date: "2026-07-04",
+    };
+
+    const response = await request(app)
+      .post("/api/transactions")
+      .send(newTransaction);
+
+    expect(response.status).toBe(201);
+    expect(response.body.message).toBe("Transaction created successfully");
+
+    expect(response.body.transaction).toMatchObject({
+      id: 4,
+      title: "Freelance Payment",
+      amount: "500.00",
+      type: "income",
+      category_id: 4,
+    });
+
+    // confirm it was really inserted into PostgreSQL
+    // the row actually exists in the database
+    const databaseResult = await pool.query(
+      "SELECT * FROM transactions WHERE id = $1",
+      [response.body.transaction.id],
+    );
+
+    expect(databaseResult.rows.length).toBe(1);
+    expect(databaseResult.rows[0]).toMatchObject({
+      title: "Freelance Payment",
+      amount: "500.00",
+      type: "income",
+      category_id: 4,
+    });
+  });
+
+  // Test invalid data for validation case
+  it("returns 400 when creating a transaction with an invalid amount", async () => {
+    // Validation middleware rejects missing fields, invalid type, or amount <= 0
+    const response = await request(app).post("/api/transactions").send({
+      title: "Invalid Transaction",
+      amount: 0,
+      type: "expense",
+      category_id: 1,
+      transaction_date: "2026-07-04",
+    });
+
+    expect(response.status).toBe(400); // bad request, client sent invalid data
+    expect(response.body).toEqual({
+      message: "Amount must be greater than 0",
+    });
+  });
+
+  // test PUT /api/transactions/:id
+  // update an existing transaction, save the changes in PostgreSQL and return 404 for a missing transaction
+  it("updates an existing transaction", async () => {
+    const updatedTransaction = {
+      title: "Team Lunch",
+      amount: 25,
+      type: "expense",
+      category_id: 1,
+      transaction_date: "2026-07-05",
+    };
+
+    const response = await request(app)
+      .put("/api/transactions/2")
+      .send(updatedTransaction);
+
+    expect(response.status).toBe(200);
+    expect(response.body.message).toBe("Transaction updated successfully");
+
+    expect(response.body.transaction).toMatchObject({
+      id: 2,
+      title: "Team Lunch",
+      amount: "25.00",
+      type: "expense",
+      category_id: 1,
+      transaction_date: "2026-07-05",
+    });
+
+    // check that the row was actually changed in the test database
+    const databaseResult = await pool.query(
+      "SELECT * FROM transactions WHERE id = $1",
+      [2],
+    );
+
+    expect(databaseResult.rows[0]).toMatchObject({
+      id: 2,
+      title: "Team Lunch",
+      amount: "25.00",
+      type: "expense",
+      category_id: 1,
+    });
+  });
+
+  // not-found test
+  it("returns 404 when updating a transaction that does not exist", async () => {
+    const response = await request(app).put("/api/transactions/999").send({
+      title: "Missing Transaction",
+      amount: 20,
+      type: "expense",
+      category_id: 1,
+      transaction_date: "2026-07-05",
+    });
+
+    expect(response.status).toBe(404);
+    expect(response.body).toEqual({
+      message: "Transaction not found",
+    });
+  });
+
+  // validation case to confirm the middleware still runs for updates
+  it("returns 400 when updating a transaction with an invalid type", async () => {
+    const response = await request(app).put("/api/transactions/2").send({
+      title: "Invalid Update",
+      amount: 20,
+      type: "transfer",
+      category_id: 1,
+      transaction_date: "2026-07-05",
+    });
+
+    expect(response.status).toBe(400); // bad request
+    expect(response.body).toEqual({
+      message: "Type must be either 'income' or 'expense'",
+    });
+  });
+
+  // test DELETE /api/transactions/:id
+  // API can delete an existing transaction, remove it from PostgreSQL and return 404 when the transaction does not exist
+  it("deletes an existing transaction", async () => {
+    const response = await request(app).delete("/api/transactions/2");
+
+    expect(response.status).toBe(200);
+    expect(response.body.message).toBe("Transaction deleted successfully");
+
+    expect(response.body.transaction).toMatchObject({
+      id: 2,
+      title: "Lunch",
+      amount: "12.50",
+      type: "expense",
+      category_id: 1,
+    });
+
+    const databaseResult = await pool.query(
+      "SELECT * FROM transactions WHERE id = $1",
+      [2],
+    );
+
+    expect(databaseResult.rows.length).toBe(0);
+  });
+
+  // missing-transaction test
+  it("returns 404 when deleting a transaction that does not exist", async () => {
+    const response = await request(app).delete("/api/transactions/999");
+
+    expect(response.status).toBe(404);
+    expect(response.body).toEqual({
+      message: "Transaction not found",
+    });
+  });
+
+  // test GET /api/transactions/summary
+  it("returns the correct transaction summary", async () => {
+    const response = await request(app).get("/api/transactions/summary");
+
+    expect(response.status).toBe(200);
+
+    expect(response.body).toEqual({
+      total_income: "3000.00",
+      total_expense: "14.50",
+      balance: "2985.50",
+    });
+  });
+
+  // test empty database case
+  it("returns zero values when there are no transactions", async () => {
+    await pool.query("TRUNCATE TABLE transactions RESTART IDENTITY");
+
+    const response = await request(app).get("/api/transactions/summary");
+
+    expect(response.status).toBe(200);
+
+    expect(response.body).toEqual({
+      total_income: "0.00",
+      total_expense: "0.00",
+      balance: "0.00",
+    });
+  });
 });
 
 // Runs once after every test inside suite has finished
