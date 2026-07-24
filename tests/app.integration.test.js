@@ -291,6 +291,68 @@ describe("Transaction API", () => {
       message: "Type must be either 'income' or 'expense'",
     });
   });
+
+  // test DELETE /api/transactions/:id
+  // API can delete an existing transaction, remove it from PostgreSQL and return 404 when the transaction does not exist
+  it("deletes an existing transaction", async () => {
+    const response = await request(app).delete("/api/transactions/2");
+
+    expect(response.status).toBe(200);
+    expect(response.body.message).toBe("Transaction deleted successfully");
+
+    expect(response.body.transaction).toMatchObject({
+      id: 2,
+      title: "Lunch",
+      amount: "12.50",
+      type: "expense",
+      category_id: 1,
+    });
+
+    const databaseResult = await pool.query(
+      "SELECT * FROM transactions WHERE id = $1",
+      [2],
+    );
+
+    expect(databaseResult.rows.length).toBe(0);
+  });
+
+  // missing-transaction test
+  it("returns 404 when deleting a transaction that does not exist", async () => {
+    const response = await request(app).delete("/api/transactions/999");
+
+    expect(response.status).toBe(404);
+    expect(response.body).toEqual({
+      message: "Transaction not found",
+    });
+  });
+
+  // test GET /api/transactions/summary
+  it("returns the correct transaction summary", async () => {
+    const response = await request(app).get("/api/transactions/summary");
+
+    expect(response.status).toBe(200);
+
+    expect(response.body).toEqual({
+      total_income: "3000.00",
+      total_expense: "14.50",
+      balance: "2985.50",
+    });
+  });
+
+  // test empty database case
+  it("returns zero values when there are no transactions", async () => {
+    await pool.query("TRUNCATE TABLE transactions RESTART IDENTITY");
+
+    const response = await request(app).get("/api/transactions/summary");
+
+    expect(response.status).toBe(200);
+
+    expect(response.body).toEqual({
+      total_income: "0.00",
+      total_expense: "0.00",
+      balance: "0.00",
+    });
+  });
 });
 
 // Runs once after every test inside suite has finished

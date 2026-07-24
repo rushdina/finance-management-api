@@ -222,7 +222,7 @@ export const getTransactionSummary = async (req, res) => {
               ELSE 0
             END
           ),
-          0
+          0.00::numeric
         ) AS total_income,
 
         COALESCE(
@@ -232,17 +232,18 @@ export const getTransactionSummary = async (req, res) => {
               ELSE 0
             END
           ),
-          0
+          0.00::numeric
         ) AS total_expense,
 
         COALESCE(
           SUM(
             CASE 
               WHEN type = 'income' THEN amount
-              ELSE -amount
+              WHEN type = 'expense' THEN -amount
+              ELSE 0
             END
           ),
-          0
+          0.00::numeric
         ) AS balance
       FROM transactions
     `);
