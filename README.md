@@ -8,11 +8,10 @@ This project was built to strengthen practical backend development skills, inclu
 
 ## 📷 Application Preview
 
-<!--
 Frontend: https://finance-management-rushdina.netlify.app/
+Backend API: https://finance-management-api-pmni.onrender.com
 
-Backend API: https://finance-management-api-pmni.onrender.com-
--->
+> **Note:** This project uses Render's free tier. The live application may be unavailable if the PostgreSQL database has expired.
 
 ![Finance Management Application](./assets/finance-management-preview.png)
 
