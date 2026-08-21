@@ -179,6 +179,7 @@ transactionForm.addEventListener("submit", async (event) => {
     submitBtn.textContent = "Add Transaction";
     cancelEditBtn.style.display = "none";
 
+    // After POST succeeds
     loadTransactions(); // rerender transaction table with new transaction added
     loadSummary(); // rerender summary
   } catch (error) {
