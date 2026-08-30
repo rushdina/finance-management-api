@@ -8,7 +8,7 @@ This project was built to strengthen practical backend development skills, inclu
 
 ## 📷 Application Preview
 
-Frontend: https://finance-management-rushdina.netlify.app/
+Frontend: https://finance-management-api-frontend.onrender.com
 
 Backend API: https://finance-management-api-pmni.onrender.com
 
