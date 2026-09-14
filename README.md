@@ -12,7 +12,7 @@ Frontend: https://finance-management-api-frontend.onrender.com
 
 Backend API: https://finance-management-api-pmni.onrender.com
 
-> **Note:** This project uses Render's free tier. The live application may be unavailable if the PostgreSQL database has expired.
+> **Note:** This project uses Render's free-tier hosting. Backend services and the database may be temporarily unavailable, which can affect the live demo.
 
 ![Finance Management Application](./assets/finance-management-preview.png)
 
