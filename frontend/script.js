@@ -56,6 +56,12 @@ const loadCategories = async () => {
 
 // Load GET transactions from backend, apply filters, and display them in table
 const loadTransactions = async () => {
+  transactionTableBody.innerHTML = `
+    <tr>
+      <td colspan="6">Loading transactions...</td>
+    </tr>
+  `;
+
   try {
     const type = filterType.value;
     const category = filterCategory.value;
@@ -95,7 +101,20 @@ const loadTransactions = async () => {
     ]
     */
 
+    if (!response.ok) {
+      throw new Error("Failed to load transactions");
+    }
+
     transactionTableBody.innerHTML = "";
+
+    if (transactions.length === 0) {
+      transactionTableBody.innerHTML = `
+        <tr>
+          <td colspan="6">No transactions found.</td>
+        </tr>
+      `;
+      return;
+    }
 
     transactions.forEach((transaction) => {
       const row = document.createElement("tr");
@@ -116,6 +135,12 @@ const loadTransactions = async () => {
     });
   } catch (error) {
     console.error("Failed to load transactions:", error);
+
+    transactionTableBody.innerHTML = `
+      <tr>
+        <td colspan="6">Failed to load transactions.</td>
+      </tr>
+    `;
   }
 };
 
@@ -197,8 +222,17 @@ cancelEditBtn.addEventListener("click", () => {
 
 // Loads GET summary totals from backend and displays them on page
 const loadSummary = async () => {
+  totalIncome.textContent = "Loading...";
+  totalExpense.textContent = "Loading...";
+  balance.textContent = "Loading...";
+
   try {
     const response = await fetch(`${API_URL}/transactions/summary`);
+
+    if (!response.ok) {
+      throw new Error("Failed to load summary");
+    }
+
     const summary = await response.json();
     /*
     {
@@ -208,11 +242,15 @@ const loadSummary = async () => {
     }
     */
 
-    totalIncome.textContent = summary.total_income;
-    totalExpense.textContent = summary.total_expense;
-    balance.textContent = summary.balance;
+    totalIncome.textContent = `$${summary.total_income}`;
+    totalExpense.textContent = `$${summary.total_expense}`;
+    balance.textContent = `$${summary.balance}`;
   } catch (error) {
     console.error("Failed to load summary:", error);
+
+    totalIncome.textContent = "Unavailable";
+    totalExpense.textContent = "Unavailable";
+    balance.textContent = "Unavailable";
   }
 };
 

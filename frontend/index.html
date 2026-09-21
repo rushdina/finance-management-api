@@ -14,9 +14,9 @@
     <main>
       <section>
         <h2>Summary</h2>
-        <p>Total Income: $<span id="totalIncome">0</span></p>
-        <p>Total Expense: $<span id="totalExpense">0</span></p>
-        <p>Balance: $<span id="balance">0</span></p>
+        <p>Total Income: <span id="totalIncome">Loading...</span></p>
+        <p>Total Expense: <span id="totalExpense">Loading...</span></p>
+        <p>Balance: <span id="balance">Loading...</span></p>
       </section>
 
       <section>
@@ -85,6 +85,9 @@
             </tr>
           </thead>
           <tbody id="transactionTableBody">
+            <tr>
+              <td colspan="6">Loading transactions...</td>
+            </tr>
             <!-- 
                 will be loaded from GET /api/transactions,
                 data comes from transactions table joined with categories table
