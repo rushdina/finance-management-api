@@ -1,26 +1,14 @@
 // controllers/categoryController.js
-// Handles category database SQL query.
+// Handles HTTP requests and responses for category operations.
 
-import pool from "../db.js";
+import { findAllCategories } from "../models/categoryModel.js";
 
 // GET /api/categories
 export const getCategories = async (req, res) => {
   try {
-    /**
-     * pool.query() sends SQL query to PostgreSQL
-     * pg library converts database rows into JS object
-     * PostgreSQL returns data rows to nodejs as JS object result
-     */
-    const result = await pool.query("SELECT * FROM categories ORDER BY id ASC");
-    /*
-    result = {
-      rows: [
-        { id: 1, name: "Food" },
-        { id: 2, name: "Transport" }
-      ]
-    }*/
+    const categories = await findAllCategories(); // model returns result.rows
 
-    res.status(200).json(result.rows); // express sends category data as JSON to frontend over HTTP
+    res.status(200).json(categories); // express sends category data as JSON to frontend over HTTP
     /*
     [
       { "id": 1, "name": "Food"},
@@ -33,3 +21,7 @@ export const getCategories = async (req, res) => {
     });
   }
 };
+
+/*
+categoryController => findAllCategories() => categoryModel => pool.query() => PostgreSQL
+*/
