@@ -1,3 +1,4 @@
+// app.js
 // Creates and configures Express application that contains middleware, routes, request handling and response handling.
 
 import express from "express";

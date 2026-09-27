@@ -1,3 +1,4 @@
+// controllers/categoryController.js
 // Handles category database SQL query.
 
 import pool from "../db.js";

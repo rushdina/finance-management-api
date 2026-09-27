@@ -1,3 +1,4 @@
+/* database/schema.sql */
 /*
  Project: Personal Finance Management API
  

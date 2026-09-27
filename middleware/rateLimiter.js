@@ -1,3 +1,4 @@
+// middleware/rateLimiter.js
 import { rateLimit } from "express-rate-limit";
 
 // Limits repeated requests to the API to reduce API abuse

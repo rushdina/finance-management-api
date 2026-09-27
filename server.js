@@ -1,3 +1,4 @@
+// server.js
 // Starts Node.js Express backend HTTP server. Run application
 import dotenv from "dotenv";
 import app from "./app.js";

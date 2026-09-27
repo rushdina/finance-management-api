@@ -1,3 +1,4 @@
+// tests/app.integration.test.js
 import request from "supertest"; // Supertest send a simulated HTTP request to Express app
 import { afterAll, beforeEach, describe, expect, it } from "vitest";
 import app from "../app.js";

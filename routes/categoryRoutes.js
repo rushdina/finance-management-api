@@ -1,3 +1,4 @@
+// routes/categoryRoutes.js
 // Defines category API route.
 
 import express from "express";

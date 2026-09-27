@@ -1,3 +1,4 @@
+// controllers/transactionController.js
 // Handles CRUD, filtering, summary, SQL queries.
 
 import pool from "../db.js";

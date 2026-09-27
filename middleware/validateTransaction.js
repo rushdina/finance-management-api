@@ -1,3 +1,4 @@
+// middleware/validateTransaction.js
 /**
  * Custom middleware runs before the controller.
  * Checks request body before POST/PUT controller runs.

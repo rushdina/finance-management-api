@@ -1,3 +1,4 @@
+// tests/setup.js
 import dotenv from "dotenv";
 
 // Load test database environment variables before test files import the app.
